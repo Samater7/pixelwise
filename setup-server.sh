@@ -22,7 +22,7 @@ fi
 
 # Install, start, and report the systemd unit on prod
 if[ -f deploy/pixelwise.service ] && \
-	command -v systemctl >/dev/null 2>&1 &&\
+	command -v systemctl >/dev/null 2>&1 && \
 	id produser >/dev/null 2>&1; then
 		sudo cp deploy/pixelwise.service \
 			/etc/systemd/system/pixelwise.service
