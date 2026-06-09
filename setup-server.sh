@@ -5,7 +5,7 @@ sudo apt update
 sudo apt install -y git python3 python3-pip \
 	python3-venv curl
 
-#Pull the pinned model artefact
+# Pull the pinned model artefact
 if [ -f .env ]; then
 	set -a; source .env; set +a
 	if [ -n "${MODEL_REPO:-}" ] && \
@@ -18,4 +18,16 @@ if [ -f .env ]; then
 		cp /tmp/pixelwise-model/MODELCARD.md models/
 		rm -rf /tmp/pixelwise-model
 	fi
+fi
+
+# Install, start, and report the systemd unit on prod
+if[ -f deploy/pixelwise.service ] && \
+	command -v systemctl >/dev/null 2>&1 &&\
+	id produser >/dev/null 2>&1; then
+	sudo cp deploy/pixelwise.service \
+		/etc/systemd/system/pixelwise.service
+	sudo systemctl daemon-reload
+	sudo systemctl enable pixelwise
+	sudo systemctl restart pixelwise
+	sudo systemctl status pixelwise
 fi
