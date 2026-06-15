@@ -60,6 +60,7 @@ def classify(request: Request, req: ClassifyRequest):
 	db.add(Prediction(
 		prediction=result["prediction"],
 		confidence=result["confidence"],
+		client_ip=request.client.host,
 		model_version="v1"))
 	db.commit()
 	db.close()
